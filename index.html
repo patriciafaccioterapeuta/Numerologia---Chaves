@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>Decifre o Código do Seu Nome | Numerologia Pitagórica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#100E1A;
+    --bg-elev:#1A1730;
+    --bg-elev-2:#221D3D;
+    --gold:#C9A66B;
+    --gold-soft:rgba(201,166,107,0.35);
+    --wine:#6B2A3D;
+    --wine-light:#8C3B52;
+    --ink:#EDE6D6;
+    --ink-muted:#A79E8C;
+    --line:rgba(201,166,107,0.22);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{ scroll-behavior:smooth; background:var(--bg) !important; color-scheme:dark; }
+  body{
+    background:var(--bg) !important;
+    color:var(--ink) !important;
+    font-family:'EB Garamond', serif;
+    font-size:19px;
+    line-height:1.65;
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+  h1,h2,h3,.display{
+    font-family:'Cinzel', serif;
+    letter-spacing:0.04em;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  .wrap{ max-width:640px; margin:0 auto; padding:0 28px; }
+  a{ color:inherit; }
+
+  /* ---------- background tetractys (decorative) ---------- */
+  .bg-tetractys{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    opacity:0.10;
+  }
+  .bg-tetractys svg{ width:100%; height:100%; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative; z-index:1;
+    min-height:92vh;
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    text-align:center;
+    padding:80px 28px 60px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:26px;
+    opacity:0.9;
+  }
+  .hero h1{
+    font-size:clamp(30px, 6vw, 46px);
+    line-height:1.22;
+    max-width:680px;
+    margin-bottom:22px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--gold);
+  }
+  .hero p.sub{
+    max-width:480px;
+    color:var(--ink-muted);
+    font-size:19px;
+    margin-bottom:40px;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Cinzel', serif;
+    font-size:14px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    text-decoration:none;
+    border:1px solid var(--gold-soft);
+    background:transparent;
+    color:var(--gold);
+    padding:16px 30px;
+    cursor:pointer;
+    transition:all 0.35s ease;
+    border-radius:2px;
+  }
+  .btn:hover{ background:var(--gold); color:var(--bg); border-color:var(--gold); }
+  .btn-solid{
+    background:var(--wine); border-color:var(--wine); color:var(--ink);
+  }
+  .btn-solid:hover{ background:var(--wine-light); border-color:var(--wine-light); color:var(--ink); }
+
+  /* ---------- sections ---------- */
+  section{ position:relative; z-index:1; padding:70px 0; }
+  .divider{
+    width:1px; height:60px; background:var(--gold-soft);
+    margin:0 auto;
+  }
+  .section-title{
+    font-size:26px;
+    text-align:center;
+    margin-bottom:14px;
+  }
+  .section-lede{
+    text-align:center;
+    color:var(--ink-muted);
+    max-width:440px;
+    margin:0 auto 44px;
+    font-style:italic;
+  }
+
+  /* ---------- form ---------- */
+  form{
+    background:var(--bg-elev);
+    border:1px solid var(--line);
+    padding:40px 32px;
+    border-radius:4px;
+  }
+  label{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:10px;
+  }
+  .field{ margin-bottom:26px; }
+  input{
+    width:100%;
+    background:var(--bg);
+    border:1px solid var(--line);
+    color:var(--ink);
+    font-family:'EB Garamond', serif;
+    font-size:19px;
+    padding:14px 16px;
+    border-radius:2px;
+  }
+  input:focus{
+    outline:none;
+    border-color:var(--gold);
+  }
+  input::-webkit-calendar-picker-indicator{ filter:invert(0.8) sepia(1) saturate(2) hue-rotate(360deg); }
+  .field-hint{
+    font-size:14px; color:var(--ink-muted); margin-top:8px;
+  }
+  form .btn{ width:100%; justify-content:center; margin-top:6px; }
+  .error{
+    color:var(--wine-light); font-family:'IBM Plex Mono', monospace; font-size:13px; margin-top:14px; display:none;
+  }
+
+  /* ---------- result ---------- */
+  #result-section{ display:none; }
+  .greeting{
+    text-align:center; font-size:28px; margin-bottom:6px;
+  }
+  .greeting .sub-greeting{
+    display:block; font-family:'EB Garamond', serif; font-style:italic; font-size:17px; color:var(--ink-muted); font-weight:400; letter-spacing:0; margin-top:10px;
+  }
+  .panel{
+    background:var(--bg-elev) !important;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:38px 24px;
+  }
+  .reading{
+    margin:36px 0 6px;
+    font-size:19px;
+    color:var(--ink) !important;
+  }
+  .reading p{ margin-bottom:22px; }
+  .reading strong{ color:var(--gold) !important; font-weight:600; }
+
+  /* tetractys reveal */
+  .tetractys{
+    display:flex; flex-direction:column; align-items:center; gap:14px;
+    margin:0 auto 50px;
+  }
+  .tet-row{ display:flex; gap:14px; }
+  .tet-dot{
+    width:11px; height:11px; border-radius:50%;
+    background:var(--bg-elev-2);
+    border:1px solid var(--line);
+    transition:all 0.7s ease;
+  }
+  .tet-dot.lit{
+    background:var(--gold);
+    box-shadow:0 0 14px 2px var(--gold-soft);
+  }
+
+  .cards{
+    display:grid; grid-template-columns:1fr 1fr; gap:14px;
+    margin-bottom:8px;
+  }
+  .card{
+    background:var(--bg-elev);
+    border:1px solid var(--line);
+    padding:24px 18px;
+    text-align:center;
+    border-radius:4px;
+    opacity:0; transform:translateY(14px);
+    transition:all 0.7s ease;
+  }
+  .card.show{ opacity:1; transform:translateY(0); }
+  .card .num{
+    font-size:38px;
+    color:var(--gold);
+    display:block;
+    margin-bottom:10px;
+  }
+  .card .label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--ink-muted);
+  }
+
+  /* ---------- CTA ---------- */
+  #cta-section{ display:none; }
+  .cta-box{
+    background:linear-gradient(160deg, var(--bg-elev) 0%, var(--bg-elev-2) 100%);
+    border:1px solid var(--gold-soft);
+    padding:44px 30px;
+    border-radius:6px;
+    text-align:center;
+  }
+  .cta-box h2{ font-size:24px; margin-bottom:16px; }
+  .cta-box p.lede{ color:var(--ink-muted); margin-bottom:26px; font-style:italic; }
+  .cta-list{
+    list-style:none; text-align:left; max-width:400px; margin:0 auto 30px;
+    font-family:'EB Garamond', serif; color:var(--ink);
+  }
+  .cta-list li{
+    padding:10px 0 10px 26px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    font-size:17px;
+  }
+  .cta-list li:last-child{ border-bottom:none; }
+  .cta-list li::before{
+    content:"✦";
+    color:var(--gold);
+    position:absolute; left:0; top:10px;
+    font-size:13px;
+  }
+  .offer-badge{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ink);
+    background:var(--wine);
+    padding:7px 16px;
+    border-radius:20px;
+    margin-bottom:22px;
+  }
+  .price-old{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:15px;
+    color:var(--ink-muted);
+    margin-bottom:2px;
+  }
+  .price-old .strike{
+    text-decoration:line-through;
+    text-decoration-color:var(--wine-light);
+  }
+  .price{
+    font-family:'Cinzel', serif;
+    font-size:15px;
+    color:var(--ink-muted);
+    margin-bottom:6px;
+    letter-spacing:0.08em;
+  }
+  .price .amount{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:42px;
+    color:var(--gold);
+    margin:8px 0 22px;
+  }
+  .countdown{
+    margin-bottom:28px;
+  }
+  .countdown-label{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--ink-muted);
+    margin-bottom:8px;
+  }
+  .countdown-timer{
+    display:inline-block;
+    font-size:26px;
+    color:var(--wine-light);
+    letter-spacing:0.06em;
+    border:1px solid var(--line);
+    padding:8px 18px;
+    border-radius:4px;
+  }
+
+  footer{
+    text-align:center;
+    padding:50px 28px 60px;
+    color:var(--ink-muted);
+    font-size:14px;
+  }
+  footer .brand{
+    font-family:'Cinzel', serif;
+    color:var(--gold);
+    letter-spacing:0.12em;
+    font-size:15px;
+    display:block;
+    margin-bottom:8px;
+  }
+
+  @media (min-width:560px){
+    .cards{ grid-template-columns:repeat(4, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-tetractys" id="bgTet"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">Numerologia Pitagórica</div>
+  <h1>O número já sabia, <em>antes de você nascer.</em></h1>
+  <p class="sub">Seu nome e sua data de nascimento não são acaso — são um código. Escreva os dois abaixo e receba, agora, as quatro primeiras chaves da sua assinatura numérica.</p>
+  <a href="#form" class="btn">Decifrar meu código</a>
+</section>
+
+<div class="divider"></div>
+
+<!-- FORM -->
+<section id="form">
+  <div class="wrap">
+    <h2 class="section-title">Escreva como está na certidão</h2>
+    <p class="section-lede">O nome de nascimento completo é o que carrega o código — não apelidos ou abreviações.</p>
+    <form id="numeroForm">
+      <div class="field">
+        <label for="nome">Nome completo de nascimento</label>
+        <input type="text" id="nome" placeholder="Ex: Ana Maria Ferreira Souza" required>
+      </div>
+      <div class="field">
+        <label for="nasc">Data de nascimento</label>
+        <input type="date" id="nasc" required>
+      </div>
+      <button type="submit" class="btn">Revelar minhas 4 chaves</button>
+      <div class="error" id="formError">Preencha o nome completo e a data corretamente.</div>
+    </form>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="result-section">
+  <div class="wrap">
+    <div class="panel">
+      <h2 class="greeting" id="greeting">
+        <span class="sub-greeting">os números falaram.</span>
+      </h2>
+
+      <div class="tetractys" id="tetractys">
+        <div class="tet-row" data-row="1"><div class="tet-dot"></div></div>
+        <div class="tet-row" data-row="2"><div class="tet-dot"></div><div class="tet-dot"></div></div>
+        <div class="tet-row" data-row="3"><div class="tet-dot"></div><div class="tet-dot"></div><div class="tet-dot"></div></div>
+        <div class="tet-row" data-row="4"><div class="tet-dot"></div><div class="tet-dot"></div><div class="tet-dot"></div><div class="tet-dot"></div></div>
+      </div>
+
+      <div class="reading" id="reading"></div>
+
+      <div class="cards" id="cards">
+        <div class="card" data-card="lifepath"><span class="num mono" id="numLifePath">–</span><span class="label">Caminho de Vida</span></div>
+        <div class="card" data-card="day"><span class="num mono" id="numDay">–</span><span class="label">Dia Natalício</span></div>
+        <div class="card" data-card="challenge"><span class="num mono" id="numChallenge">–</span><span class="label">Principal Desafio</span></div>
+        <div class="card" data-card="letter"><span class="num mono" id="numLetter">–</span><span class="label">Primeira Letra</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta-section">
+  <div class="wrap">
+    <div class="cta-box">
+      <h2>Isso é só a superfície.</h2>
+      <p class="lede">O que você acabou de ler usa apenas 4 dos mais de 10 números que compõem o seu Mapa Numerológico completo.</p>
+      <ul class="cta-list">
+        <li>Número de Destino — o que você veio realizar nesta vida</li>
+        <li>Motivação da Alma — o que você deseja de verdade, mesmo sem admitir</li>
+        <li>Número de Personalidade — como o mundo te percebe por trás da máscara</li>
+        <li>Ciclos de Vida e Ano Pessoal — o que está se abrindo e se fechando agora</li>
+        <li>Números em Falta — os aprendizados que sua vida insiste em repetir</li>
+      </ul>
+      <div class="offer-badge">Somente hoje</div>
+      <div class="price-old mono">De <span class="strike">R$ 197,00</span></div>
+      <div class="price">Mapa Numerológico Completo</div>
+      <span class="amount mono">R$ 59,00</span>
+      <div class="countdown">
+        <span class="countdown-label">Esta oferta expira em</span>
+        <span class="countdown-timer mono" id="countdown">00:00:00</span>
+      </div>
+      <a href="#" id="whatsBtn" target="_blank" class="btn btn-solid">Quero meu Mapa Completo</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="brand">Patricia · Numerologia Pitagórica</span>
+  Seus dados são usados apenas para gerar esta leitura, na hora, no seu navegador.
+</footer>
+
+<script>
+/* ---------------- Tetractys de fundo (decorativa) ---------------- */
+(function(){
+  const rows = [1,2,3,4];
+  const spacing = 46;
+  let svg = '<svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">';
+  let y = 60;
+  rows.forEach((count)=>{
+    const totalWidth = (count-1)*spacing;
+    const startX = 200 - totalWidth/2;
+    for(let i=0;i<count;i++){
+      const x = startX + i*spacing;
+      svg += `<circle cx="${x}" cy="${y}" r="4.5" fill="#C9A66B"/>`;
+    }
+    y += spacing;
+  });
+  svg += '</svg>';
+  document.getElementById('bgTet').innerHTML = svg;
+})();
+
+/* ---------------- Cronômetro "somente hoje" (expira à meia-noite) ---------------- */
+(function(){
+  const el = document.getElementById('countdown');
+  function tick(){
+    const now = new Date();
+    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+    let diff = Math.max(0, endOfDay - now);
+    const h = String(Math.floor(diff / 3600000)).padStart(2,'0');
+    const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+    const s = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
+    el.textContent = `${h}:${m}:${s}`;
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+/* ---------------- Regras de cálculo pitagórico ---------------- */
+function digitSum(n){
+  return String(n).split('').reduce((a,b)=> a + (parseInt(b,10)||0), 0);
+}
+function reduceKeepMasters(n){
+  while(n > 9 && ![11,22,33].includes(n)){
+    n = digitSum(n);
+  }
+  return n;
+}
+function reducePlain(n){
+  while(n > 9){ n = digitSum(n); }
+  return n;
+}
+function calcLifePath(day, month, year){
+  let total = digitSum(day) + digitSum(month) + digitSum(year);
+  return reduceKeepMasters(total);
+}
+function calcDayNumber(day){
+  return reduceKeepMasters(day);
+}
+function calcChallenge(day, month){
+  const d = reducePlain(day);
+  const m = reducePlain(month);
+  return Math.abs(d - m);
+}
+function letterToNumber(letter){
+  const idx = letter.toUpperCase().charCodeAt(0) - 65; // A=0
+  return (idx % 9) + 1;
+}
+
+/* ---------------- Bancos de significado ---------------- */
+const lifePathText = {
+  1:"um caminho de autonomia. Você veio a este mundo para aprender a confiar na própria iniciativa, tomar decisões sem depender da aprovação alheia, e transformar ideias em ação através da coragem de começar sozinha, se for preciso. É um número ligado à individualidade, à criatividade que nasce quando você segue sua própria voz em vez da voz da maioria, e à liderança que surge naturalmente quando alguém precisa dar o primeiro passo. O aprendizado central da sua vida é desenvolver autonomia real — não a independência que empurra todo mundo para longe, mas a que nasce de confiar em si mesma o suficiente para criar o próprio caminho, mesmo sem mapa.",
+  2:"um caminho de conexão. Você veio aprender a arte da parceria — sentir o que os outros não dizem, construir pontes onde existia distância, e usar sua sensibilidade como força, não como fragilidade. É um número de diplomacia, escuta profunda e cooperação, mas também de paciência: seu caminho pede que você aprenda a esperar o momento certo, em vez de forçar respostas. O grande aprendizado é equilibrar entrega e autopreservação — cuidar dos vínculos sem se perder dentro deles.",
+  3:"um caminho de expressão. Você veio aprender a transformar sentimento em criação — palavra, arte, presença, humor — e confiar que sua voz merece ocupar espaço. É um número de criatividade, otimismo e comunicação natural, capaz de iluminar qualquer ambiente em que entra. O desafio que acompanha esse dom é a dispersão: aprender a sustentar profundidade em vez de fugir dela através da leveza. Seu caminho pede coragem para se expressar por inteiro, inclusive no que dói.",
+  4:"um caminho de construção. Você veio aprender disciplina, método e paciência — transformar visão em estrutura sólida, tijolo por tijolo, mesmo quando o processo é lento e invisível. É um número de responsabilidade, organização e trabalho ético, o tipo de força que sustenta o que os outros só sonham. O aprendizado central é abrir espaço para flexibilidade dentro da própria estrutura — confiar que nem tudo que vale a pena pode ser totalmente planejado.",
+  5:"um caminho de liberdade. Você veio para grandes transformações — movida por curiosidade insaciável, inteligência rápida e um magnetismo que atrai experiências novas o tempo todo. É um número de versatilidade, de fome por viver de verdade em vez de só observar, e de coragem para romper o que se tornou pequeno demais para você. O aprendizado, que costuma vir reforçado pelo seu Dia Natalício, é sustentar liberdade sem virar fuga — a diferença entre se libertar de algo e simplesmente abandonar tudo antes que fique difícil.",
+  6:"um caminho de cuidado. Você veio aprender responsabilidade afetiva — nutrir, proteger e criar harmonia nos espaços em que entra, seja em família, trabalho ou comunidade. É um número de lealdade, senso estético e generosidade genuína, mas que carrega o risco do excesso: assumir responsabilidade pelo bem-estar de todos, inclusive do que não te pertence. O aprendizado central é cuidar a partir da escolha, não da obrigação — e lembrar que você também está na lista de quem merece cuidado.",
+  7:"um caminho analítico e introspectivo. Você veio investigar o que está por trás das aparências — sua mente não se contenta com respostas fáceis, e existe uma necessidade quase espiritual de tempo e espaço sozinha para processar o mundo. É um número de profundidade intelectual, intuição refinada e conexão com o invisível, mas que exige solidão para funcionar bem. O aprendizado é confiar o suficiente em alguém para deixar essa reflexão ser compartilhada, em vez de vivida só por dentro.",
+  8:"um caminho de poder pessoal. Você veio aprender a lidar com autoridade, dinheiro e ambição de forma consciente — construir resultado concreto no mundo material sem deixar que isso endureça quem você é por dentro. É um número de visão estratégica, capacidade executiva e magnetismo de liderança, associado a ciclos de grande conquista. O aprendizado central é equilibrar força com ética, e reconhecer o próprio valor sem medir tudo pelo que se produz ou possui.",
+  9:"um caminho de entrega e encerramento. Você veio aprender a soltar o que já cumpriu seu papel — pessoas, fases, versões de si mesma — com uma compaixão que costuma ultrapassar o que é só seu. É um número de sabedoria emocional, generosidade e visão ampla sobre a condição humana. O desafio é aprender a receber com a mesma disposição com que você entrega, sem se esvaziar no processo.",
+  11:"um caminho de intuição elevada. Você veio para enxergar além do que os outros conseguem ver — percepções, ideias e verdades que chegam antes de qualquer explicação lógica. É um número mestre de inspiração espiritual, sensibilidade extrema e potencial de impacto coletivo, mas que carrega também ansiedade e autocobrança intensas. O aprendizado central é confiar na própria intuição sem se afogar na pressão de estar sempre à altura dela.",
+  22:"um caminho de construção em grande escala. Você veio dar forma prática a visões ambiciosas — o raro encontro entre sonhar grande e saber, passo a passo, como tornar isso real. É um número mestre de potencial extraordinário, ligado à realização de projetos que impactam muita gente além de você mesma. O aprendizado é sustentar a magnitude do próprio potencial sem se paralisar pelo peso dele.",
+  33:"um caminho de serviço através do amor. Você veio aprender a entregar cuidado, cura e presença incondicional, quase como um chamado que ultrapassa a própria vida pessoal. É um número mestre raro, associado à generosidade mais pura que existe na numerologia — e também ao maior risco de autoanulação. O aprendizado central é servir sem desaparecer: sustentar o outro sem deixar de se sustentar."
+};
+const dayText = {
+  1:"desenvolver autonomia e iniciativa. Você chegou com a semente da liderança, mas ela ainda pede lapidação: aprender a tomar a frente sem atropelar, e confiar na própria voz mesmo sem aplausos imediatos. É um convite constante a sair da zona de conforto e assinar embaixo das próprias decisões.",
+  2:"desenvolver sensibilidade e parceria. Você chegou com uma percepção emocional acima da média, mas ainda aprendendo a usá-la sem se perder nas necessidades de quem está por perto. É um convite a confiar na própria intuição relacional e a se posicionar com a mesma delicadeza com que percebe o outro.",
+  3:"desenvolver expressão e criatividade. Você chegou com talento natural para comunicação, humor e presença — mas ainda aprendendo a usar essa leveza sem fugir do que exige seriedade. É um convite a se expressar por inteiro, não só na parte fácil de mostrar.",
+  4:"desenvolver disciplina e organização. Você chegou com capacidade de estruturar o caos alheio, mas ainda aprendendo a aplicar essa mesma ordem à própria vida, sem rigidez. É um convite a construir bases sólidas com paciência, mesmo quando o processo é lento.",
+  5:"desenvolver liberdade e adaptabilidade. Você chegou com curiosidade natural e facilidade para se adaptar mais rápido do que qualquer um ao redor — mas ainda aprendendo a sustentar isso sem virar impaciência ou fuga do que exige tempo. É um convite a experimentar a vida de verdade, sem abandonar o que só ia dar certo com um pouco mais de permanência.",
+  6:"desenvolver responsabilidade afetiva. Você chegou com instinto natural de cuidado, assumindo responsabilidades antes mesmo de ser pedida — mas ainda aprendendo que cuidar de si conta tanto quanto cuidar dos outros. É um convite a equilibrar entrega com autocuidado.",
+  7:"desenvolver profundidade e introspecção. Você chegou com uma mente analítica que não se satisfaz com a superfície de nada — mas ainda aprendendo a dar a si mesma o tempo e o espaço de silêncio que essa mente exige, sem culpa. É um convite a confiar no próprio processo interno, mesmo quando ele é mais lento que o mundo ao redor.",
+  8:"desenvolver presença e gestão. Você chegou com capacidade natural de administrar recursos, pessoas e situações complexas — mas ainda aprendendo a usar essa presença com consciência, sem deixar que o poder afaste por medo alheio. É um convite a liderar com generosidade, não só com força.",
+  9:"desenvolver compaixão e acolhimento. Você chegou com sensibilidade quase universal para a dor alheia, capaz de fazer qualquer pessoa se sentir vista — mas ainda aprendendo a acolher a si mesma com a mesma generosidade que oferece aos outros. É um convite a soltar o que não serve mais sem se sentir culpada por isso.",
+  11:"desenvolver intuição e sensibilidade elevada. Você chegou com uma antena voltada para o que ainda não aconteceu — sabe coisas sem saber como sabe. É um convite a confiar nessa percepção sem deixar que ela vire ansiedade constante.",
+  22:"desenvolver visão prática em grande escala. Você chegou com a rara combinação entre sonhar grande e saber construir passo a passo — mas ainda aprendendo a confiar no próprio potencial sem se sentir esmagada pelo tamanho dele. É um convite a pensar grande sem paralisar diante da própria capacidade."
+};
+const essence = {
+  1:"autonomia, iniciativa e coragem para começar",
+  2:"sensibilidade, parceria e escuta",
+  3:"expressão, criatividade e comunicação",
+  4:"estrutura, disciplina e construção",
+  5:"liberdade, curiosidade e transformação",
+  6:"cuidado, responsabilidade e harmonia",
+  7:"introspecção, análise e busca espiritual",
+  8:"poder pessoal, ambição e resultado material",
+  9:"compaixão, encerramento de ciclos e serviço",
+  11:"intuição elevada e visão além do comum",
+  22:"visão prática em grande escala",
+  33:"amor incondicional e entrega ao outro"
+};
+const challengeText = {
+  0:"você é, ao mesmo tempo, seu maior obstáculo e sua maior ferramenta. Não existe um único ponto cego a vencer — existe a tarefa de se conhecer profundamente o suficiente para usar cada característica sua a seu favor, em vez de contra você mesma.",
+  1:"confiar em si mesma sem depender da aprovação alheia. Você provavelmente aprendeu, em algum momento, que era mais seguro se esconder do que se afirmar — e a vida cobra, repetidamente, que você ocupe espaço mesmo sem garantia de aplauso.",
+  2:"não se perder nas necessidades dos outros. A linha entre cuidar e se anular é fina para você, e situações parecidas — de formas diferentes — vão te testar até que aprenda a colocar seu próprio limite antes de ser forçada a isso.",
+  3:"dizer a verdade sem medo de desagradar. Existe uma tendência a suavizar, adiar ou até esconder o que você realmente pensa, por medo do conflito — e a vida vai insistir em te colocar diante de momentos que exigem exatamente a coragem que você tenta evitar.",
+  4:"aceitar limites sem senti-los como prisão. Regras, prazos e estruturas podem parecer uma ameaça à sua liberdade, quando na verdade são o que sustenta o que você mais quer construir.",
+  5:"usar a liberdade sem se dispersar. Você tem facilidade para começar e dificuldade para sustentar — e a vida vai repetir esse teste até que compromisso deixe de soar como prisão.",
+  6:"cuidar dos outros sem se esquecer de si mesma. Sua tendência é medir o próprio valor pelo quanto entrega, e isso vai continuar cobrando um preço até que você aprenda a receber tanto quanto oferece.",
+  7:"confiar no que não pode provar. Ceticismo é sua defesa natural, mas também o que te afasta de pessoas e oportunidades que exigiam só um pouco mais de abertura.",
+  8:"lidar com poder e dinheiro sem culpa nem excesso. Você vai, mais de uma vez, precisar decidir entre jogar pequeno por medo de ser vista como ambiciosa, ou assumir de vez o tamanho da sua capacidade."
+};
+const letterText = {
+  1:"quem chega e já é notada — mesmo sem tentar. Antes de qualquer palavra, seu nome já comunica presença e decisão, o que atrai tanto admiração quanto, às vezes, uma resistência de quem se sente ofuscado.",
+  2:"quem transmite calma antes mesmo de falar. Há algo no seu nome que deixa as pessoas à vontade quase instantaneamente — um convite silencioso à confiança.",
+  3:"quem parece familiar, mesmo no primeiro encontro. Seu nome carrega uma vibração calorosa que faz estranhos se sentirem, de alguma forma, já conhecidos.",
+  4:"quem inspira confiança e solidez à primeira vista. As pessoas sentem, antes de qualquer prova, que podem contar com o que você promete.",
+  5:"quem desperta curiosidade — nunca é 'só mais uma'. Seu nome carrega uma vibração de movimento que faz as pessoas quererem saber o que vem a seguir.",
+  6:"quem parece alguém em quem se pode apoiar. Há um magnetismo acolhedor na primeira impressão que seu nome causa, quase protetor, mesmo à distância.",
+  7:"quem intriga, e faz as pessoas quererem entender melhor. Seu nome carrega um mistério sutil — nunca entrega tudo de uma vez, e isso é parte do seu magnetismo.",
+  8:"quem impõe presença, mesmo em silêncio. Antes de qualquer palavra, seu nome já comunica autoridade — algo que pode intimidar tanto quanto impressionar.",
+  9:"quem parece carregar uma história maior do que aparenta. Há uma profundidade na primeira impressão que seu nome causa, como se as pessoas sentissem que há muito mais por trás."
+};
+
+/* ---------------- Submissão do formulário ---------------- */
+const form = document.getElementById('numeroForm');
+const errorEl = document.getElementById('formError');
+
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  const nomeInput = document.getElementById('nome').value.trim();
+  const nascInput = document.getElementById('nasc').value;
+
+  if(!nomeInput || nomeInput.split(' ').filter(Boolean).length < 1 || !nascInput){
+    errorEl.style.display = 'block';
+    return;
+  }
+  const primeiraLetra = nomeInput.trim()[0];
+  if(!/[A-Za-zÀ-ÿ]/.test(primeiraLetra)){
+    errorEl.style.display = 'block';
+    return;
+  }
+  errorEl.style.display = 'none';
+
+  const [year, month, day] = nascInput.split('-').map(Number);
+  if(!day || !month || !year){
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  const lifePath = calcLifePath(day, month, year);
+  const dayNum = calcDayNumber(day);
+  const challenge = calcChallenge(day, month);
+  const letterNum = letterToNumber(primeiraLetra.normalize("NFD").replace(/[\u0300-\u036f]/g,""));
+
+  const primeiroNome = nomeInput.trim().split(' ')[0];
+
+  renderResult({
+    nome: primeiroNome,
+    lifePath, dayNum, challenge, letterNum,
+    diaFormatado: day
+  });
+});
+
+function renderResult(d){
+  document.getElementById('greeting').innerHTML =
+    `${d.nome} <span class="sub-greeting">os números falaram.</span>`;
+
+  document.getElementById('numLifePath').textContent = d.lifePath;
+  document.getElementById('numDay').textContent = d.dayNum;
+  document.getElementById('numChallenge').textContent = d.challenge;
+  document.getElementById('numLetter').textContent = d.letterNum;
+
+  const lp = lifePathText[d.lifePath];
+  const dt = dayText[d.dayNum];
+  const ct = challengeText[d.challenge] ?? "equilibrar forças opostas dentro de si";
+  const lt = letterText[d.letterNum] ?? "alguém que causa impacto só de chegar";
+
+  let synthesis;
+  if(d.lifePath === d.dayNum){
+    synthesis = `Note que o número do seu Dia Natalício repete a mesma energia do seu Caminho de Vida: <strong>${essence[d.dayNum]}</strong>. Isso não é coincidência — é um chamado forte o bastante para a vida reforçá-lo duas vezes: na jornada inteira, e no dia exato em que você nasceu.`;
+  } else {
+    synthesis = `Repare como os dois conversam entre si: enquanto o Caminho de Vida fala de <strong>${essence[d.lifePath]}</strong>, o Dia Natalício traz uma camada própria — <strong>${essence[d.dayNum]}</strong>. Um é o rumo maior da sua existência; o outro é o talento específico que veio junto, para apoiar (ou tensionar) esse caminho.`;
+  }
+
+  document.getElementById('reading').innerHTML = `
+    <p><strong>${d.nome}</strong>, seu Caminho de Vida é regido pelo <strong>${d.lifePath}</strong>: ${lp}</p>
+    <p>Seu Dia Natalício, o <strong>${d.diaFormatado}</strong>, reduz-se ao <strong>${d.dayNum}</strong> — a marca específica do que você veio ${dt}</p>
+    <p>${synthesis}</p>
+    <p>Todo número, porém, carrega sua sombra. Seu Desafio Central é o <strong>${d.challenge}</strong>: ${ct} Esse é, muito provavelmente, o obstáculo que se repete — disfarçado de situações diferentes — bem no meio do caminho que seu Caminho de Vida pede que você trilhe.</p>
+    <p>E há o que você já traz pronto, sem precisar aprender: a primeira impressão. A primeira letra do seu nome vibra no <strong>${d.letterNum}</strong> — ${lt}</p>
+    <p>Repare: isso são só 4 números, entre mais de 10 que compõem o seu mapa — e ainda assim, provavelmente você se reconheceu em cada linha. Imagine o que os outros têm a dizer sobre o motivo por trás de cada escolha que você faz, cada padrão que se repete, e o que você veio realmente fazer aqui.</p>
+  `;
+
+  document.getElementById('result-section').style.display = 'block';
+  document.getElementById('cta-section').style.display = 'block';
+
+  // Monta link do WhatsApp com mensagem personalizada
+  const msg = encodeURIComponent(`Olá! Acabei de descobrir que meu Caminho de Vida é ${d.lifePath} e quero meu Mapa Numerológico Completo.`);
+  document.getElementById('whatsBtn').href = `https://wa.me/message/LSQ5D7ADV3KYK1?text=${msg}`;
+
+  // Anima tetractys: base (4) -> topo (1)
+  const rows = document.querySelectorAll('.tet-row');
+  const order = [4,3,2,1];
+  order.forEach((rowNum, i)=>{
+    setTimeout(()=>{
+      const row = document.querySelector(`.tet-row[data-row="${rowNum}"]`);
+      row.querySelectorAll('.tet-dot').forEach(dot => dot.classList.add('lit'));
+    }, i * 350);
+  });
+
+  // Anima cards em sequência
+  const cardOrder = ['lifepath','day','challenge','letter'];
+  cardOrder.forEach((key, i)=>{
+    setTimeout(()=>{
+      document.querySelector(`.card[data-card="${key}"]`).classList.add('show');
+    }, 600 + i * 220);
+  });
+
+  setTimeout(()=>{
+    document.getElementById('result-section').scrollIntoView({behavior:'smooth', block:'start'});
+  }, 100);
+}
+</script>
+</body>
+</html>
