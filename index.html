@@ -139,7 +139,7 @@
     margin-bottom:10px;
   }
   .field{ margin-bottom:26px; }
-  input{
+  input, select{
     width:100%;
     background:var(--bg);
     border:1px solid var(--line);
@@ -149,7 +149,7 @@
     padding:14px 16px;
     border-radius:2px;
   }
-  input:focus{
+  input:focus, select:focus{
     outline:none;
     border-color:var(--gold);
   }
@@ -363,6 +363,13 @@
         <label for="nasc">Data de nascimento</label>
         <input type="date" id="nasc" required>
       </div>
+      <div class="field">
+        <label for="sexo">Gênero</label>
+        <select id="sexo" required>
+          <option value="feminino">Feminino</option>
+          <option value="masculino">Masculino</option>
+        </select>
+      </div>
       <button type="submit" class="btn">Revelar minhas 4 chaves</button>
       <div class="error" id="formError">Preencha o nome completo e a data corretamente.</div>
     </form>
@@ -559,6 +566,38 @@ const letterText = {
   9:"quem parece carregar uma história maior do que aparenta. Há uma profundidade na primeira impressão que seu nome causa, como se as pessoas sentissem que há muito mais por trás."
 };
 
+/* ---------------- Ajuste de gênero ---------------- */
+const GENDER_SWAPS = [
+  [/\bvocê mesma\b/g, "você mesmo"],
+  [/\bsi mesma\b/g, "si mesmo"],
+  [/\bsozinha\b/g, "sozinho"],
+  [/\bparecer gananciosa\b/g, "parecer ganancioso"],
+  [/\bpapéis de cuidadora\b/g, "papéis de cuidador"],
+  [/\bpapel de cuidadora\b/g, "papel de cuidador"],
+  [/\bdesalinhada\b/g, "desalinhado"],
+  [/\balinhada\b/g, "alinhado"],
+  [/\bser reconhecida\b/g, "ser reconhecido"],
+  [/\bser vista\b/g, "ser visto"],
+  [/\bser amada\b/g, "ser amado"],
+  [/\bsentir amada\b/g, "sentir amado"],
+  [/\bser cuidada\b/g, "ser cuidado"],
+  [/\bmanter segura\b/g, "manter seguro"],
+  [/\bveio movida\b/g, "veio movido"],
+  [/\bser levada a sério\b/g, "ser levado a sério"],
+  [/\bsentir sobrecarregada\b/g, "sentir sobrecarregado"],
+  [/\bressentida\b/g, "ressentido"],
+  [/\bpresa\b/g, "preso"],
+  [/\bnotada\b/g, "notado"],
+  [/\bconfusa\b/g, "confuso"],
+  [/\bfaltosa\b/g, "faltoso"]
+];
+function genderize(text, sexo){
+  if(sexo !== 'masculino') return text;
+  let out = text;
+  GENDER_SWAPS.forEach(([re, repl]) => { out = out.replace(re, repl); });
+  return out;
+}
+
 /* ---------------- Submissão do formulário ---------------- */
 const form = document.getElementById('numeroForm');
 const errorEl = document.getElementById('formError');
@@ -589,12 +628,13 @@ form.addEventListener('submit', function(e){
   const dayNum = calcDayNumber(day);
   const challenge = calcChallenge(day, month);
   const letterNum = letterToNumber(primeiraLetra.normalize("NFD").replace(/[\u0300-\u036f]/g,""));
+  const sexo = document.getElementById('sexo').value;
 
   const primeiroNome = nomeInput.trim().split(' ')[0];
 
   renderResult({
     nome: primeiroNome,
-    lifePath, dayNum, challenge, letterNum,
+    lifePath, dayNum, challenge, letterNum, sexo,
     diaFormatado: day
   });
 });
@@ -608,10 +648,10 @@ function renderResult(d){
   document.getElementById('numChallenge').textContent = d.challenge;
   document.getElementById('numLetter').textContent = d.letterNum;
 
-  const lp = lifePathText[d.lifePath];
-  const dt = dayText[d.dayNum];
-  const ct = challengeText[d.challenge] ?? "equilibrar forças opostas dentro de si";
-  const lt = letterText[d.letterNum] ?? "alguém que causa impacto só de chegar";
+  const lp = genderize(lifePathText[d.lifePath], d.sexo);
+  const dt = genderize(dayText[d.dayNum], d.sexo);
+  const ct = genderize(challengeText[d.challenge] ?? "equilibrar forças opostas dentro de si", d.sexo);
+  const lt = genderize(letterText[d.letterNum] ?? "alguém que causa impacto só de chegar", d.sexo);
 
   let synthesis;
   if(d.lifePath === d.dayNum){
