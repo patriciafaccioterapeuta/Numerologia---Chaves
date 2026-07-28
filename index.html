@@ -672,9 +672,9 @@ function renderResult(d){
   document.getElementById('result-section').style.display = 'block';
   document.getElementById('cta-section').style.display = 'block';
 
-  // Monta link do WhatsApp com mensagem personalizada
-  const msg = encodeURIComponent(`Olá! Acabei de descobrir que meu Caminho de Vida é ${d.lifePath} e quero meu Mapa Numerológico Completo.`);
-  document.getElementById('whatsBtn').href = `https://wa.me/message/LSQ5D7ADV3KYK1?text=${msg}`;
+  // Monta link direto para o WhatsApp com a mensagem do cupom
+  const msg = encodeURIComponent(`Olá, quero meu Mapa Numerológico completo, cupom "MINHASCHAVES".`);
+  document.getElementById('whatsBtn').href = `https://wa.me/5531999841604?text=${msg}`;
 
   // Anima tetractys: base (4) -> topo (1)
   const rows = document.querySelectorAll('.tet-row');
